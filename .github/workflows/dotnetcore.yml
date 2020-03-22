@@ -19,5 +19,6 @@ jobs:
         dotnet-version: 3.1.101
     - name: Build with dotnet
       run: dotnet build --configuration Release
+  test:
     - name: Run Unit-Test
       run: dotnet test
