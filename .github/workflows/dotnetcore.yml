@@ -20,5 +20,9 @@ jobs:
     - name: Build with dotnet
       run: dotnet build --configuration Release
   test:
-    - name: Run Unit-Test
-      run: dotnet test
+    
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Run Unit-Test
+        run: dotnet test
