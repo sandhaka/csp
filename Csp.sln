@@ -1,0 +1,22 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Csp", "Csp\Csp.csproj", "{4E6707A1-C4AA-4547-81A4-164DD85BCB41}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MapColoringCsp", "MapColoringCsp\MapColoringCsp.csproj", "{66FDF256-332D-400D-977F-4E423B19AB5D}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{4E6707A1-C4AA-4547-81A4-164DD85BCB41}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4E6707A1-C4AA-4547-81A4-164DD85BCB41}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4E6707A1-C4AA-4547-81A4-164DD85BCB41}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4E6707A1-C4AA-4547-81A4-164DD85BCB41}.Release|Any CPU.Build.0 = Release|Any CPU
+		{66FDF256-332D-400D-977F-4E423B19AB5D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{66FDF256-332D-400D-977F-4E423B19AB5D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{66FDF256-332D-400D-977F-4E423B19AB5D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{66FDF256-332D-400D-977F-4E423B19AB5D}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
