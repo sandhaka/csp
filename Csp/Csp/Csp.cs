@@ -48,6 +48,11 @@ namespace Csp.Csp
             return this;
         }
 
+        public void AutoAssignment()
+        {
+            _model.AutoAssign();
+        }
+
         public int Conflicts(string key, T value)
         {
             return _model.Conflicts(key, value);
@@ -59,6 +64,20 @@ namespace Csp.Csp
             return this;
         }
 
-        public bool Resolve() => _resolver?.Resolve(this) ?? throw new InvalidOperationException("A resolver must be set");
+        public bool Resolve(Action whenResolved = null)
+        {
+            var resolved = _resolver?.Resolve(this) ?? throw new InvalidOperationException("A resolver must be set");
+            if (resolved)
+            {
+                whenResolved?.Invoke();
+            }
+
+            return resolved;
+        }
+
+        public string ShowModelAsJson()
+        {
+            return _model.ToJson();
+        }
     }
 }

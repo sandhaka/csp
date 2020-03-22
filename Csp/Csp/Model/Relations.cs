@@ -15,6 +15,15 @@ namespace Csp.Csp.Model
             Values = values.ToList();
         }
 
+        internal object ToAnonymous()
+        {
+            return new
+            {
+                Key,
+                Values = Values.Select(v => v.ToAnonymous())
+            };
+        }
+
         public override bool Equals(object obj)
         {
             if (obj is null)

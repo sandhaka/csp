@@ -4,17 +4,20 @@ using System.Drawing;
 using System.Linq;
 using Csp.Csp;
 using Xunit;
+using Xunit.Abstractions;
 
 namespace MapColoringCsp
 {
     public class CspTest
     {
+        private readonly ITestOutputHelper _testOutputHelper;
         private CspFactory _factory = new CspFactory();
         private readonly Csp<ColorWrapper> _mapColoredCsp;
         private readonly IEnumerable<ColorWrapper> _colorsDomain = new ColorWrapper[] {Color.Red, Color.Green, Color.Blue};
 
-        public CspTest()
+        public CspTest(ITestOutputHelper testOutputHelper)
         {
+            _testOutputHelper = testOutputHelper;
             _mapColoredCsp = _factory.Create(
                 new Dictionary<string, IEnumerable<ColorWrapper>>
                 {
@@ -67,7 +70,14 @@ namespace MapColoringCsp
             // Try to auto-resolve with arc-consistency ac3 strategy
             var solved = _mapColoredCsp
                 .UseAc3AsResolver()
-                .Resolve();
+                .Resolve(() =>
+                {
+                    _mapColoredCsp.AutoAssignment();
+
+                    _testOutputHelper.WriteLine("==== Model: ====");
+                    _testOutputHelper.WriteLine($"{_mapColoredCsp.ShowModelAsJson()}");
+                    _testOutputHelper.WriteLine("================");
+                });
 
             Assert.True(solved);
         }

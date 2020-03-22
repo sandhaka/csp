@@ -26,6 +26,15 @@ namespace Csp.Csp.Model
             Values.Remove(v);
         }
 
+        internal object ToAnonymous()
+        {
+            return new
+            {
+                Key,
+                Values = Values.ToList()
+            };
+        }
+
         public override bool Equals(object obj)
         {
             if (obj is null)

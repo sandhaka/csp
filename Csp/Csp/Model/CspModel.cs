@@ -1,6 +1,6 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
+using Newtonsoft.Json;
 
 // Note: readability is preferred
 // ReSharper disable LoopCanBeConvertedToQuery
@@ -30,16 +30,9 @@ namespace Csp.Csp.Model
             Constraints = constraints.ToHashSet();
         }
 
-        internal bool Validate()
-        {
-            // TODO: The model must be validated before used
-            throw new NotImplementedException();
-        }
-
         internal Variable<T> GetVariable(string key) => Variables.First(v => v.Key == key);
         internal Domain<T> GetDomain(string key) => Domains.First(d => d.Key == key);
         internal Relations<T> GetVariableRelations(string key) => Relations.First(r => r.Key == key);
-
         internal IEnumerable<KeyValuePair<string, Variable<T>>> FlatRelations() =>
             Relations.SelectMany(r =>
                 r.Values.Select(v =>
@@ -58,6 +51,14 @@ namespace Csp.Csp.Model
         internal void Assign(string key, T value)
         {
             GetVariable(key).Value = value;
+        }
+
+        internal void AutoAssign()
+        {
+            foreach (var variable in Variables)
+            {
+                Assign(variable.Key, GetDomain(variable.Key).Values.First());
+            }
         }
 
         internal int Conflicts(string key, T value)
@@ -82,6 +83,14 @@ namespace Csp.Csp.Model
             GetDomain(key).Prune(value);
         }
 
-        
+        internal string ToJson()
+        {
+            return JsonConvert.SerializeObject(new
+            {
+                Variables = Variables.Select(v => v.ToAnonymous()).ToList(),
+                Domains = Domains.Select(d => d.ToAnonymous()).ToList(),
+                Relations = Relations.Select(r => r.ToAnonymous()).ToList()
+            }, Formatting.Indented);
+        }
     }
 }

@@ -14,6 +14,15 @@ namespace Csp.Csp.Model
             Key = key;
         }
 
+        internal object ToAnonymous()
+        {
+            return new
+            {
+                Key,
+                Value
+            };
+        }
+
         public override bool Equals(object obj)
         {
             if (obj is null)
