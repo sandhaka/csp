@@ -16,7 +16,7 @@ namespace Csp.Resolvers
     /// there is some value in the domain Dj that satisfies the binary constraint on the arc (Xi, Xj).
     /// A network is arc-consistent if every variable is arc-consistent with every other variable.
     /// </summary>
-    internal class Ac3<T> : IResolver<T>
+    internal class Ac3<T> : IArcConsistencyResolver<T>
         where T : class
     {
         public bool Resolve(

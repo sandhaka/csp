@@ -4,7 +4,7 @@ using Csp.Csp.Model;
 
 namespace Csp.Csp
 {
-    internal interface IResolver<T>
+    internal interface IArcConsistencyResolver<T>
         where T : class
     {
         bool Resolve(

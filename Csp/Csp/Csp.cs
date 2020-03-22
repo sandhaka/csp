@@ -11,7 +11,7 @@ namespace Csp.Csp
     {
         private CspModel<T> _model;
         private int _nAssigns = 0;
-        private IResolver<T> _resolver;
+        private IArcConsistencyResolver<T> _arcConsistencyResolver;
 
         public int NumberOfTotalAssignments => _nAssigns;
 
@@ -60,13 +60,13 @@ namespace Csp.Csp
 
         public Csp<T> UseAc3AsResolver()
         {
-            _resolver = new Ac3<T>();
+            _arcConsistencyResolver = new Ac3<T>();
             return this;
         }
 
         public bool Resolve(Action whenResolved = null)
         {
-            var resolved = _resolver?.Resolve(this) ?? throw new InvalidOperationException("A resolver must be set");
+            var resolved = _arcConsistencyResolver?.Resolve(this) ?? throw new InvalidOperationException("A resolver must be set");
             if (resolved)
             {
                 whenResolved?.Invoke();

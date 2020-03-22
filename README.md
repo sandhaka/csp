@@ -12,5 +12,5 @@ Abstractions to use Constraint Satisfaction Problems and resolvers in your proje
 .2 Subclassing Cap<T> class to create your own implementation with custom members and methods overloading.
 
 ### Examples
-See tests projects
+See tests projects:
 - MapColoringCsp: Color Australia regions with different colors in order to avoid conflicts (Every neighbor regions must has a different color).
