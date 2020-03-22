@@ -42,10 +42,6 @@ namespace Csp.Resolvers
                         return false;
                     }
                     queue.Enqueue(pair);
-                    // foreach (var variable in csp.Model.GetVariableRelations(x.Key).Values)
-                    // {
-                    //
-                    // }
                 }
             }
 
