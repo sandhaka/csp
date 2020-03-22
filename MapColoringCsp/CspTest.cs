@@ -11,7 +11,7 @@ namespace MapColoringCsp
     public class CspTest
     {
         private readonly ITestOutputHelper _testOutputHelper;
-        private CspFactory _factory = new CspFactory();
+        private readonly CspFactory _factory = new CspFactory();
         private readonly Csp<ColorWrapper> _mapColoredCsp;
         private readonly IEnumerable<ColorWrapper> _colorsDomain = new ColorWrapper[] {Color.Red, Color.Green, Color.Blue};
 
@@ -78,6 +78,16 @@ namespace MapColoringCsp
                     _testOutputHelper.WriteLine($"{_mapColoredCsp.ShowModelAsJson()}");
                     _testOutputHelper.WriteLine("================");
                 });
+
+            Assert.True(solved);
+        }
+
+        //[Fact]
+        public void ShouldResolveWithBackTrackingSearch()
+        {
+            var solved = _mapColoredCsp
+                .UseBackTrackingSearchResolver()
+                .Resolve();
 
             Assert.True(solved);
         }

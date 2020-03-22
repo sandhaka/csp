@@ -1,5 +1,8 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using Csp.Csp.Validators;
+using FluentValidation.Results;
 using Newtonsoft.Json;
 
 // Note: readability is preferred
@@ -28,6 +31,8 @@ namespace Csp.Csp.Model
             Domains = domains.ToHashSet();
             Relations = relations.ToHashSet();
             Constraints = constraints.ToHashSet();
+
+            Validate();
         }
 
         internal Variable<T> GetVariable(string key) => Variables.First(v => v.Key == key);
@@ -91,6 +96,56 @@ namespace Csp.Csp.Model
                 Domains = Domains.Select(d => d.ToAnonymous()).ToList(),
                 Relations = Relations.Select(r => r.ToAnonymous()).ToList()
             }, Formatting.Indented);
+        }
+
+        private void Validate()
+        {
+            var variableValidator = new VariableValidator<T>();
+            var domainValidator = new DomainValidator<T>();
+            var relationsValidator = new RelationsValidator<T>();
+            var constraintValidator = new ConstraintValidator<T>();
+
+            var errors = new List<ValidationFailure>();
+
+            foreach (var result in Variables.Select(variable => variableValidator.Validate(variable)).Where(result => !result.IsValid))
+            {
+                errors.AddRange(result.Errors.ToList());
+            }
+
+            foreach (var result in Domains.Select(domain => domainValidator.Validate(domain)).Where(result => !result.IsValid))
+            {
+                errors.AddRange(result.Errors.ToList());
+            }
+
+            foreach (var result in Relations.Select(relation => relationsValidator.Validate(relation)).Where(result => !result.IsValid))
+            {
+                errors.AddRange(result.Errors.ToList());
+            }
+
+            foreach (var result in Constraints.Select(constraint => constraintValidator.Validate(constraint)).Where(result => !result.IsValid))
+            {
+                errors.AddRange(result.Errors.ToList());
+            }
+
+            if (errors.Any())
+            {
+                throw new ArgumentException(errors.Select(e => e.ErrorMessage).Aggregate((a, b) => $"{a},{b}"));
+            }
+
+            if (Relations.Any(r => Variables.All(v => v.Key != r.Key)))
+            {
+                throw new ArgumentException("Relationships/Variables mismatch");
+            }
+
+            if (Relations.Any(r => r.Values.Any(rv => Variables.All(v => v.Key != rv.Key))))
+            {
+                throw new ArgumentException("Relationships/Variables mismatch");
+            }
+
+            if (Domains.Any(d => !d.Values.Any()))
+            {
+                throw new ArgumentException("Domain size cannot start as zero");
+            }
         }
     }
 }

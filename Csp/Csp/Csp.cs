@@ -11,7 +11,9 @@ namespace Csp.Csp
     {
         private CspModel<T> _model;
         private int _nAssigns = 0;
+
         private IArcConsistencyResolver<T> _arcConsistencyResolver;
+        private IBackTrackingResolver<T> _backTrackingResolver;
 
         public int NumberOfTotalAssignments => _nAssigns;
 
@@ -61,6 +63,12 @@ namespace Csp.Csp
         public Csp<T> UseAc3AsResolver()
         {
             _arcConsistencyResolver = new Ac3<T>();
+            return this;
+        }
+
+        public Csp<T> UseBackTrackingSearchResolver()
+        {
+            _backTrackingResolver = new BackTrackingSearch<T>();
             return this;
         }
 
