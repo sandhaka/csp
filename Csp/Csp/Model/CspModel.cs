@@ -36,8 +36,11 @@ namespace Csp.Csp.Model
         }
 
         internal Variable<T> GetVariable(string key) => Variables.First(v => v.Key == key);
+        internal Variable<T> GetFirstVariable(Func<Variable<T>, bool> predicate) => Variables.FirstOrDefault(predicate);
         internal Domain<T> GetDomain(string key) => Domains.First(d => d.Key == key);
-        internal Relations<T> GetVariableRelations(string key) => Relations.First(r => r.Key == key);
+        internal Relations<T> GetVariableRelations(string key) =>
+            Relations.FirstOrDefault(r =>
+                r.Key == key) ?? new Relations<T>(key, new List<Variable<T>>());
         internal IEnumerable<KeyValuePair<string, Variable<T>>> FlatRelations() =>
             Relations.SelectMany(r =>
                 r.Values.Select(v =>
@@ -47,6 +50,8 @@ namespace Csp.Csp.Model
             Domains.SelectMany(d =>
                 d.Pruned.Select(p =>
                     new KeyValuePair<string, T>(d.Key, p)));
+        internal bool IsAllAssigned => Variables.All(v => v.Assigned);
+        internal bool Resolved => IsAllAssigned && Variables.All(v => Conflicts(v.Key, v.Value) == 0);
 
         internal void Revoke(string key)
         {
@@ -86,6 +91,16 @@ namespace Csp.Csp.Model
         internal void Prune(string key, T value)
         {
             GetDomain(key).Prune(value);
+        }
+
+        internal void Suppose(string key, T value)
+        {
+            GetDomain(key).Suppose(value);
+        }
+
+        internal void RestoreGuess(string key)
+        {
+            GetDomain(key).RestoreGuess(key);
         }
 
         internal string ToJson()
@@ -144,7 +159,7 @@ namespace Csp.Csp.Model
 
             if (Domains.Any(d => !d.Values.Any()))
             {
-                throw new ArgumentException("Domain size cannot start as zero");
+                throw new ArgumentException("Domain start size cannot be zero");
             }
         }
     }

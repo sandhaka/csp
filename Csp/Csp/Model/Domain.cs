@@ -9,6 +9,7 @@ namespace Csp.Csp.Model
         internal string Key { get; }
         internal List<T> Values { get; }
         internal List<T> Pruned { get; }
+        internal List<T> RemovedByGuess { get; private set; }
 
         internal bool IsEmpty => !Values.Any();
 
@@ -17,6 +18,7 @@ namespace Csp.Csp.Model
             Key = key;
             Values = values.ToList();
             Pruned = new List<T>();
+            RemovedByGuess = new List<T>();
         }
 
         internal void Prune(T value)
@@ -24,6 +26,18 @@ namespace Csp.Csp.Model
             var v = Values.Find(val => val.Equals(value));
             Pruned.Add(v);
             Values.Remove(v);
+        }
+
+        internal void Suppose(T value)
+        {
+            RemovedByGuess = Values.Where(v => v != value).ToList();
+            Values.RemoveAll(v => v != value);
+        }
+
+        internal void RestoreGuess(string key)
+        {
+            Values.AddRange(RemovedByGuess);
+            RemovedByGuess.Clear();
         }
 
         internal object ToAnonymous()
@@ -51,5 +65,6 @@ namespace Csp.Csp.Model
         }
 
         public override int GetHashCode() => Key.GetHashCode();
+
     }
 }

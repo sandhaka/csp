@@ -16,22 +16,30 @@ namespace Csp.Resolvers
     /// there is some value in the domain Dj that satisfies the binary constraint on the arc (Xi, Xj).
     /// A network is arc-consistent if every variable is arc-consistent with every other variable.
     /// </summary>
-    internal class Ac3<T> : IArcConsistencyResolver<T>
+    internal class Ac3<T> : IResolver<T>
         where T : class
     {
-        public bool Resolve(
-            Csp<T> csp,
+        private Queue<KeyValuePair<string, Variable<T>>> _queue;
+        private readonly Action<Queue<KeyValuePair<string, Variable<T>>>> _arcHeuristic;
+
+        public Ac3(
             Queue<KeyValuePair<string, Variable<T>>> queue = null,
             Action<Queue<KeyValuePair<string, Variable<T>>>> arcHeuristic = null)
         {
-            if (queue == null)
+            _queue = queue;
+            _arcHeuristic = arcHeuristic;
+        }
+
+        public bool Resolve(Csp<T> csp)
+        {
+            if (_queue == null)
             {
-                queue = new Queue<KeyValuePair<string, Variable<T>>>(csp.Model.FlatRelations());
+                _queue = new Queue<KeyValuePair<string, Variable<T>>>(csp.Model.FlatRelations());
             }
 
-            arcHeuristic?.Invoke(queue);
+            _arcHeuristic?.Invoke(_queue);
 
-            while (queue.TryDequeue(out var pair))
+            while (_queue.TryDequeue(out var pair))
             {
                 var x = csp.Model.GetVariable(pair.Key);
                 var y = pair.Value;
@@ -41,7 +49,7 @@ namespace Csp.Resolvers
                     {
                         return false;
                     }
-                    queue.Enqueue(pair);
+                    _queue.Enqueue(pair);
                 }
             }
 

@@ -9,9 +9,9 @@ Active development
 Abstractions to use Constraint Satisfaction Problems and resolvers in your projects.
 
 ### How to use 
-.1 Use directly the generic Csp<T> class, adding contraints, define domains and relations through the Factory.
+.1 Use directly the generic Csp\<T\> class, adding contraints, define domains and relationships through the Factory.
 
-.2 Subclassing Csp<T> class to create your own implementation with custom members and methods overloading.
+.2 Subclassing Csp\<T\> class to create your own implementation with custom members and methods overloading.
 
 ### Examples
 See tests projects:

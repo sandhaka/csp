@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using Csp.Csp;
+using Csp.Resolvers.BackTrackingSearch;
 using Xunit;
 using Xunit.Abstractions;
 
@@ -11,14 +12,13 @@ namespace MapColoringCsp
     public class CspTest
     {
         private readonly ITestOutputHelper _testOutputHelper;
-        private readonly CspFactory _factory = new CspFactory();
         private readonly Csp<ColorWrapper> _mapColoredCsp;
         private readonly IEnumerable<ColorWrapper> _colorsDomain = new ColorWrapper[] {Color.Red, Color.Green, Color.Blue};
 
         public CspTest(ITestOutputHelper testOutputHelper)
         {
             _testOutputHelper = testOutputHelper;
-            _mapColoredCsp = _factory.Create(
+            _mapColoredCsp = CspFactory.Create(
                 new Dictionary<string, IEnumerable<ColorWrapper>>
                 {
                     ["SA"] = _colorsDomain.ToList(),
@@ -67,11 +67,12 @@ namespace MapColoringCsp
         [Fact]
         public void ShouldPropagateConsistencyWithAc3()
         {
-            // Try to auto-resolve with arc-consistency ac3 strategy
+            // Use Arc-Consistency propagation to reduce the legal domain values
             var solved = _mapColoredCsp
                 .UseAc3AsResolver()
                 .Resolve(() =>
                 {
+                    // Auto assign the legal values left
                     _mapColoredCsp.AutoAssignment();
 
                     _testOutputHelper.WriteLine("==== Model: ====");
@@ -80,16 +81,24 @@ namespace MapColoringCsp
                 });
 
             Assert.True(solved);
+            Assert.True(_mapColoredCsp.Resolved);
         }
 
-        //[Fact]
+        [Fact]
         public void ShouldResolveWithBackTrackingSearch()
         {
+            // Use Backtracking Search (Depth-First) to assign legal values
             var solved = _mapColoredCsp
-                .UseBackTrackingSearchResolver()
-                .Resolve();
+                .UseBackTrackingSearchResolver(Config.Default)
+                .Resolve(() =>
+                {
+                    _testOutputHelper.WriteLine("==== Model: ====");
+                    _testOutputHelper.WriteLine($"{_mapColoredCsp.ShowModelAsJson()}");
+                    _testOutputHelper.WriteLine("================");
+                });
 
             Assert.True(solved);
+            Assert.True(_mapColoredCsp.Resolved);
         }
     }
 }
