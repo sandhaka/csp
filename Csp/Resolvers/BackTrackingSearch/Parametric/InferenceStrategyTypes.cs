@@ -1,5 +1,3 @@
-using System;
-
 namespace Csp.Resolvers.BackTrackingSearch.Parametric
 {
     public static class InferenceStrategyTypes<T>

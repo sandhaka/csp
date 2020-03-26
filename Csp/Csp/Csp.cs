@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using Csp.Csp.Model;
 using Csp.Resolvers;
 using Csp.Resolvers.BackTrackingSearch;
