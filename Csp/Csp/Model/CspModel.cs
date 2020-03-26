@@ -38,15 +38,20 @@ namespace Csp.Csp.Model
         internal Variable<T> GetVariable(string key) => Variables.First(v => v.Key == key);
         internal Variable<T> GetFirstVariable(Func<Variable<T>, bool> predicate) => Variables.FirstOrDefault(predicate);
         internal Domain<T> GetDomain(string key) => Domains.First(d => d.Key == key);
-        internal Relations<T> GetVariableRelations(string key) =>
+        internal IEnumerable<Constraint<T>> GetConstraints() => Constraints;
+
+        internal IEnumerable<string> VariablesKeys => Variables.Select(v => v.Key);
+        internal IEnumerable<string> ConflictedVariables => Variables
+                .Where(v => Conflicts(v.Key, v.Value) > 0)
+                .Select(v => v.Key);
+        internal Relations<T> VariableRelations(string key) =>
             Relations.FirstOrDefault(r =>
                 r.Key == key) ?? new Relations<T>(key, new List<Variable<T>>());
         internal IEnumerable<KeyValuePair<string, Variable<T>>> FlatRelations() =>
             Relations.SelectMany(r =>
                 r.Values.Select(v =>
                     new KeyValuePair<string, Variable<T>>(v.Key, GetVariable(r.Key))));
-        internal IEnumerable<Constraint<T>> GetConstraints() => Constraints;
-        internal IEnumerable<KeyValuePair<string, T>> Pruned =>
+        internal IEnumerable<KeyValuePair<string, T>> PrunedDomainValues =>
             Domains.SelectMany(d =>
                 d.Pruned.Select(p =>
                     new KeyValuePair<string, T>(d.Key, p)));
@@ -71,10 +76,10 @@ namespace Csp.Csp.Model
             }
         }
 
-        internal int Conflicts(string key, T value)
+        internal virtual int Conflicts(string key, T value)
         {
             var c = 0;
-            foreach (var neighbor in GetVariableRelations(key).Values.Where(v => v.Assigned))
+            foreach (var neighbor in VariableRelations(key).Values.Where(v => v.Assigned))
             {
                 foreach (var cs in Constraints)
                 {

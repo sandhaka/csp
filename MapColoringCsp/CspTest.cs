@@ -100,5 +100,22 @@ namespace MapColoringCsp
             Assert.True(solved);
             Assert.True(_mapColoredCsp.Resolved);
         }
+
+        [Fact]
+        public void ShouldResolveWithHillClimbing()
+        {
+            // Use Hill-climbing search to find the legal combination
+            var solved = _mapColoredCsp
+                .UseMinConflicts()
+                .Resolve(() =>
+                {
+                    _testOutputHelper.WriteLine("==== Model: ====");
+                    _testOutputHelper.WriteLine($"{_mapColoredCsp.ShowModelAsJson()}");
+                    _testOutputHelper.WriteLine("================");
+                });
+
+            Assert.True(solved);
+            Assert.True(_mapColoredCsp.Resolved);
+        }
     }
 }

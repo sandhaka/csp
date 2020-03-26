@@ -62,7 +62,7 @@ namespace Csp.Csp
 
         public int NumberOfTotalAssignments => _nAssigns;
 
-        public Dictionary<string, T> Pruned => _model.Pruned.ToDictionary(d => d.Key, d => d.Value);
+        public Dictionary<string, T> Pruned => _model.PrunedDomainValues.ToDictionary(d => d.Key, d => d.Value);
 
         public Csp<T> UseAc3AsResolver()
         {
@@ -103,6 +103,12 @@ namespace Csp.Csp
                 domainValuesOrderingStrategy,
                 inferenceStrategy);
 
+            return this;
+        }
+
+        public Csp<T> UseMinConflicts()
+        {
+            _resolver = new MinConflicts<T>();
             return this;
         }
 

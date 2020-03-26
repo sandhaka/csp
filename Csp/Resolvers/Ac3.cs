@@ -11,11 +11,6 @@ using Csp.Csp.Model;
 
 namespace Csp.Resolvers
 {
-    /// <summary>
-    /// A variable Xi is arc-consistent with respect to another variable Xj if for every value in the current domain Di
-    /// there is some value in the domain Dj that satisfies the binary constraint on the arc (Xi, Xj).
-    /// A network is arc-consistent if every variable is arc-consistent with every other variable.
-    /// </summary>
     internal class Ac3<T> : IResolver<T>
         where T : class
     {
