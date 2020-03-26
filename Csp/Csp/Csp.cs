@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using Csp.Csp.Model;
 using Csp.Resolvers;
 using Csp.Resolvers.BackTrackingSearch;
@@ -70,38 +71,19 @@ namespace Csp.Csp
             return this;
         }
 
-        public Csp<T> UseBackTrackingSearchResolver(Config config)
+        public Csp<T> UseBackTrackingSearchResolver(
+            string selectStrategy = "",
+            string domainOrderingStrategy = "",
+            string infStrategyType = "")
         {
-            IInferenceStrategy<T> inferenceStrategy;
-            IDomainValuesOrderingStrategy<T> domainValuesOrderingStrategy;
-            ISelectUnassignedVariableStrategy<T> selectUnassignedVariableStrategy;
-
-            switch (config)
-            {
-                case Config.Default:
-                {
-                    inferenceStrategy = new NoInference<T>();
-                    domainValuesOrderingStrategy = new UnorderedDomainValues<T>();
-                    selectUnassignedVariableStrategy = new FirstUnassignedVariable<T>();
-                    break;
-                }
-                case Config.AppliedHeuristic:
-                {
-                    throw new NotImplementedException();
-                }
-                default:
-                {
-                    inferenceStrategy = new NoInference<T>();
-                    domainValuesOrderingStrategy = new UnorderedDomainValues<T>();
-                    selectUnassignedVariableStrategy = new FirstUnassignedVariable<T>();
-                    break;
-                }
-            }
+            var infType = Type.GetType(infStrategyType) ?? typeof(NoInference<T>);
+            var domainOrdType = Type.GetType(domainOrderingStrategy) ?? typeof(UnorderedDomainValues<T>);
+            var selectType = Type.GetType(selectStrategy) ?? typeof(FirstUnassignedVariable<T>);
 
             _resolver = new BackTrackingSearch<T>(
-                selectUnassignedVariableStrategy,
-                domainValuesOrderingStrategy,
-                inferenceStrategy);
+                (ISelectUnassignedVariableStrategy<T>) Activator.CreateInstance(selectType),
+                (IDomainValuesOrderingStrategy<T>) Activator.CreateInstance(domainOrdType),
+                (IInferenceStrategy<T>) Activator.CreateInstance(infType));
 
             return this;
         }

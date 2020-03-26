@@ -86,6 +86,7 @@ namespace Csp.Csp.Model
                     if (!cs.Rule.Invoke(key, value, neighbor.Key, neighbor.Value))
                     {
                         c++;
+                        break;
                     }
                 }
             }
@@ -120,29 +121,24 @@ namespace Csp.Csp.Model
 
         private void Validate()
         {
-            var variableValidator = new VariableValidator<T>();
-            var domainValidator = new DomainValidator<T>();
-            var relationsValidator = new RelationsValidator<T>();
-            var constraintValidator = new ConstraintValidator<T>();
-
             var errors = new List<ValidationFailure>();
 
-            foreach (var result in Variables.Select(variable => variableValidator.Validate(variable)).Where(result => !result.IsValid))
+            foreach (var result in Variables.Select(variable => new VariableValidator<T>().Validate(variable)).Where(result => !result.IsValid))
             {
                 errors.AddRange(result.Errors.ToList());
             }
 
-            foreach (var result in Domains.Select(domain => domainValidator.Validate(domain)).Where(result => !result.IsValid))
+            foreach (var result in Domains.Select(domain => new DomainValidator<T>().Validate(domain)).Where(result => !result.IsValid))
             {
                 errors.AddRange(result.Errors.ToList());
             }
 
-            foreach (var result in Relations.Select(relation => relationsValidator.Validate(relation)).Where(result => !result.IsValid))
+            foreach (var result in Relations.Select(relation => new RelationsValidator<T>().Validate(relation)).Where(result => !result.IsValid))
             {
                 errors.AddRange(result.Errors.ToList());
             }
 
-            foreach (var result in Constraints.Select(constraint => constraintValidator.Validate(constraint)).Where(result => !result.IsValid))
+            foreach (var result in Constraints.Select(constraint => new ConstraintValidator<T>().Validate(constraint)).Where(result => !result.IsValid))
             {
                 errors.AddRange(result.Errors.ToList());
             }

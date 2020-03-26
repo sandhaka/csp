@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using Csp.Csp;
-using Csp.Resolvers.BackTrackingSearch;
+using Csp.Resolvers.BackTrackingSearch.Parametric;
 using Xunit;
 using Xunit.Abstractions;
 
@@ -89,7 +89,27 @@ namespace MapColoringCsp
         {
             // Use Backtracking Search (Depth-First) to assign legal values
             var solved = _mapColoredCsp
-                .UseBackTrackingSearchResolver(Config.Default)
+                .UseBackTrackingSearchResolver()
+                .Resolve(() =>
+                {
+                    _testOutputHelper.WriteLine("==== Model: ====");
+                    _testOutputHelper.WriteLine($"{_mapColoredCsp.ShowModelAsJson()}");
+                    _testOutputHelper.WriteLine("================");
+                });
+
+            Assert.True(solved);
+            Assert.True(_mapColoredCsp.Resolved);
+        }
+
+        [Fact]
+        public void ShouldResolveWithBackTrackingSearchAndHeuristicForwardCheckingInference()
+        {
+            // Use Backtracking Search (Depth-First) to assign legal values
+            var solved = _mapColoredCsp
+                .UseBackTrackingSearchResolver(
+                    SelectUnassignedVariableStrategyTypes<ColorWrapper>.FirstUnassignedVariable,
+                    DomainValuesOrderingStrategyTypes<ColorWrapper>.UnorderedDomainValues,
+                    InferenceStrategyTypes<ColorWrapper>.ForwardChecking)
                 .Resolve(() =>
                 {
                     _testOutputHelper.WriteLine("==== Model: ====");
