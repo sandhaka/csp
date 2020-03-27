@@ -4,5 +4,6 @@ namespace Csp.Resolvers.BackTrackingSearch.Parametric
         where T : class
     {
         public static readonly string FirstUnassignedVariable = typeof(FirstUnassignedVariable<T>).AssemblyQualifiedName;
+        public static readonly string MinimumRemainingValues = typeof(MinimumRemainingValues<T>).AssemblyQualifiedName;
     }
 }

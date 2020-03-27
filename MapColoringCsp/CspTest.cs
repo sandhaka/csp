@@ -102,7 +102,7 @@ namespace MapColoringCsp
         }
 
         [Fact]
-        public void ShouldResolveWithBackTrackingSearchAndHeuristicForwardCheckingInference()
+        public void ShouldResolveWithBackTrackingSearchAndForwardCheckingInferenceStrategy()
         {
             // Use Backtracking Search (Depth-First) to assign legal values
             var solved = _mapColoredCsp
@@ -110,6 +110,43 @@ namespace MapColoringCsp
                     SelectUnassignedVariableStrategyTypes<ColorWrapper>.FirstUnassignedVariable,
                     DomainValuesOrderingStrategyTypes<ColorWrapper>.UnorderedDomainValues,
                     InferenceStrategyTypes<ColorWrapper>.ForwardChecking)
+                .Resolve(() =>
+                {
+                    _testOutputHelper.WriteLine("==== Model: ====");
+                    _testOutputHelper.WriteLine($"{_mapColoredCsp.ShowModelAsJson()}");
+                    _testOutputHelper.WriteLine("================");
+                });
+
+            Assert.True(solved);
+            Assert.True(_mapColoredCsp.Resolved);
+        }
+
+        [Fact]
+        public void ShouldResolveWithBackTrackingSearchAndMinimumRemainingStrategy()
+        {
+            // Use Backtracking Search (Depth-First) to assign legal values
+            var solved = _mapColoredCsp
+                .UseBackTrackingSearchResolver(
+                    SelectUnassignedVariableStrategyTypes<ColorWrapper>.MinimumRemainingValues)
+                .Resolve(() =>
+                {
+                    _testOutputHelper.WriteLine("==== Model: ====");
+                    _testOutputHelper.WriteLine($"{_mapColoredCsp.ShowModelAsJson()}");
+                    _testOutputHelper.WriteLine("================");
+                });
+
+            Assert.True(solved);
+            Assert.True(_mapColoredCsp.Resolved);
+        }
+
+        [Fact]
+        public void ShouldResolveWithBackTrackingSearchAndLeastConstrainingStrategy()
+        {
+            // Use Backtracking Search (Depth-First) to assign legal values
+            var solved = _mapColoredCsp
+                .UseBackTrackingSearchResolver(
+                    SelectUnassignedVariableStrategyTypes<ColorWrapper>.FirstUnassignedVariable,
+                    DomainValuesOrderingStrategyTypes<ColorWrapper>.LeastConstrainingValues)
                 .Resolve(() =>
                 {
                     _testOutputHelper.WriteLine("==== Model: ====");

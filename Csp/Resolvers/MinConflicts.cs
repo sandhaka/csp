@@ -19,7 +19,7 @@ namespace Csp.Resolvers
 
             for (var i = 0; i < MaxLoop; i++)
             {
-                var conflicted = csp.Model.ConflictedVariables.ToList();
+                var conflicted = csp.Model.ConflictedVariables.Select(v => v.Key).ToList();
 
                 if (!conflicted.Any())
                 {
