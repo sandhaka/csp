@@ -3,7 +3,7 @@ using System;
 namespace Csp.Csp.Model
 {
     internal class Constraint<T>
-        where T : class
+        where T : CspValue
     {
         internal Func<string, T, string, T, bool> Rule { get; }
 

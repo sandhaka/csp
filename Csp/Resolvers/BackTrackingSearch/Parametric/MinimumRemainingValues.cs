@@ -6,7 +6,7 @@ using Csp.Csp.Model;
 namespace Csp.Resolvers.BackTrackingSearch.Parametric
 {
     internal class MinimumRemainingValues<T> : ISelectUnassignedVariableStrategy<T>
-        where T : class
+        where T : CspValue
     {
         public Variable<T> Next(Csp<T> csp)
         {

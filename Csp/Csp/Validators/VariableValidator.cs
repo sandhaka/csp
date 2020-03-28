@@ -4,7 +4,7 @@ using FluentValidation;
 namespace Csp.Csp.Validators
 {
     internal class VariableValidator<T> : AbstractValidator<Variable<T>>
-        where T : class
+        where T : CspValue
     {
         public VariableValidator()
         {

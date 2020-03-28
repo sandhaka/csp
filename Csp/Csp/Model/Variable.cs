@@ -1,7 +1,7 @@
 namespace Csp.Csp.Model
 {
     internal class Variable<T>
-        where T : class
+        where T : CspValue
     {
         internal string Key { get; }
 

@@ -3,7 +3,7 @@ using Csp.Csp;
 namespace Csp.Resolvers.BackTrackingSearch
 {
     internal class BackTrackingSearch<T> : IResolver<T>
-        where T : class
+        where T : CspValue
     {
         private readonly ISelectUnassignedVariableStrategy<T> _selUnVarStrategy;
         private readonly IDomainValuesOrderingStrategy<T> _domValOrdStrategy;

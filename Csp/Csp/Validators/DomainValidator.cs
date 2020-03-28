@@ -4,7 +4,7 @@ using FluentValidation;
 namespace Csp.Csp.Validators
 {
     internal class DomainValidator<T> : AbstractValidator<Domain<T>>
-        where T : class
+        where T : CspValue
     {
         public DomainValidator()
         {

@@ -12,7 +12,7 @@ using Csp.Csp.Model;
 namespace Csp.Resolvers
 {
     internal class Ac3<T> : IResolver<T>
-        where T : class
+        where T : CspValue
     {
         private Queue<KeyValuePair<string, Variable<T>>> _queue;
         private readonly Action<Queue<KeyValuePair<string, Variable<T>>>> _arcHeuristic;

@@ -5,7 +5,7 @@ using Csp.Csp;
 namespace Csp.Resolvers
 {
     public class MinConflicts<T> : IResolver<T>
-        where T : class
+        where T : CspValue
     {
         private const int MaxLoop = 100000;
 

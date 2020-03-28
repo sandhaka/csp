@@ -3,7 +3,7 @@ using Csp.Csp;
 namespace Csp.Resolvers.BackTrackingSearch
 {
     internal interface IInferenceStrategy<T>
-        where T : class
+        where T : CspValue
     {
         bool Inference(Csp<T> csp, string varKey, T value);
     }

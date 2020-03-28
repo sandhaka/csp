@@ -4,7 +4,7 @@ using System.Linq;
 namespace Csp.Csp.Model
 {
     internal class Relations<T>
-        where T : class
+        where T : CspValue
     {
         internal string Key { get; }
         internal List<Variable<T>> Values { get; }

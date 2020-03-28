@@ -9,7 +9,7 @@ using Csp.Resolvers.BackTrackingSearch.Parametric;
 namespace Csp.Csp
 {
     public class Csp<T>
-        where T : class
+        where T : CspValue
     {
         private readonly CspModel<T> _model;
         private IResolver<T> _resolver;

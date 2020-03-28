@@ -13,7 +13,7 @@ using Newtonsoft.Json;
 namespace Csp.Csp.Model
 {
     internal class CspModel<T>
-        where T : class
+        where T : CspValue
     {
         private HashSet<Variable<T>> Variables { get; }
         private HashSet<Domain<T>> Domains { get; }

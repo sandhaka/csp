@@ -4,7 +4,7 @@ using FluentValidation;
 namespace Csp.Csp.Validators
 {
     internal class RelationsValidator<T> : AbstractValidator<Relations<T>>
-        where T : class
+        where T : CspValue
     {
         public RelationsValidator()
         {

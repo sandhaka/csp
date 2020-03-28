@@ -4,7 +4,7 @@ using Csp.Csp;
 namespace Csp.Resolvers.BackTrackingSearch
 {
     public interface IDomainValuesOrderingStrategy<T>
-        where T : class
+        where T : CspValue
     {
         IEnumerable<T> GetDomainValues(Csp<T> csp, string key);
     }

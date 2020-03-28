@@ -4,6 +4,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Csp", "Csp\Csp.csproj", "{4
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MapColoringCsp", "MapColoringCsp\MapColoringCsp.csproj", "{66FDF256-332D-400D-977F-4E423B19AB5D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SchoolCalendar", "SchoolCalendar\SchoolCalendar.csproj", "{585A774B-6B4F-4551-8AB6-35E38AECCCAA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -18,5 +20,9 @@ Global
 		{66FDF256-332D-400D-977F-4E423B19AB5D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{66FDF256-332D-400D-977F-4E423B19AB5D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{66FDF256-332D-400D-977F-4E423B19AB5D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{585A774B-6B4F-4551-8AB6-35E38AECCCAA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{585A774B-6B4F-4551-8AB6-35E38AECCCAA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{585A774B-6B4F-4551-8AB6-35E38AECCCAA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{585A774B-6B4F-4551-8AB6-35E38AECCCAA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

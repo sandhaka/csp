@@ -9,7 +9,7 @@ namespace Csp.Csp
             IDictionary<string, IEnumerable<T>> domains,
             IDictionary<string, IEnumerable<string>> relations,
             IEnumerable<Func<string, T, string, T, bool>> constraints
-        ) where T : class
+        ) where T : CspValue
         {
             // TODO: Manage here the inputs basic validations
 
