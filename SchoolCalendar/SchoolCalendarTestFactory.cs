@@ -55,7 +55,7 @@ namespace SchoolCalendar
             }
 
             var data = new Dictionary<string, (IEnumerable<Teacher> domains, IEnumerable<string> relations)>(
-                CreateVariablesId().Select(v => new KeyValuePair<string, (IEnumerable<Teacher> domains, IEnumerable<string> relations)>(
+                variablesId.Select(v => new KeyValuePair<string, (IEnumerable<Teacher> domains, IEnumerable<string> relations)>(
                     v, (teachers, relations.Where(r => r.Key == v).SelectMany(r => r.Value))
                 ))
             );
