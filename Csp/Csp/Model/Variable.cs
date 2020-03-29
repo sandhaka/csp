@@ -3,9 +3,25 @@ namespace Csp.Csp.Model
     internal class Variable<T>
         where T : CspValue
     {
+        private T _value;
+
         internal string Key { get; }
 
-        internal T Value { get; set; }
+        internal T Value
+        {
+            get => _value;
+            set
+            {
+                if (value == null)
+                {
+                    _value?.RevokeCallback();
+                }
+
+                _value = value;
+
+                _value?.AssignmentCallback();
+            }
+        }
 
         internal bool Assigned => Value != null;
 

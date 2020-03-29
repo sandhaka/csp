@@ -52,6 +52,10 @@ namespace Csp.Csp
 
         public void AutoAssignment() => _model.AutoAssign();
 
+        public void SortBeforeAutoAssignment() => _model.SortAndAutoAssign();
+
+        public void RandomAssignment() => _model.RandomAssign();
+
         public int Conflicts(string key, T value) => _model.Conflicts(key, value);
 
         public string ShowModelAsJson() => _model.ToJson();
@@ -87,7 +91,7 @@ namespace Csp.Csp
             return this;
         }
 
-        public Csp<T> UseMinConflicts()
+        public Csp<T> UseMinConflictsResolver()
         {
             _resolver = new MinConflicts<T>();
             return this;

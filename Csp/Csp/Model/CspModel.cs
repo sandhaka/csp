@@ -68,11 +68,29 @@ namespace Csp.Csp.Model
             GetVariable(key).Value = value;
         }
 
+        internal void SortAndAutoAssign()
+        {
+            foreach (var variable in Variables)
+            {
+                var values = GetDomain(variable.Key).Values;
+                values.Sort();
+                Assign(variable.Key, values.First());
+            }
+        }
+
         internal void AutoAssign()
         {
             foreach (var variable in Variables)
             {
                 Assign(variable.Key, GetDomain(variable.Key).Values.First());
+            }
+        }
+
+        internal void RandomAssign()
+        {
+            foreach (var variable in Variables)
+            {
+                Assign(variable.Key, GetDomain(variable.Key).Random());
             }
         }
 

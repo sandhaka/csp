@@ -40,5 +40,15 @@ namespace Csp.Csp
         protected abstract int TypeConcernedGetHashCode();
 
         protected abstract bool TypeConcernedEquals(object obj);
+
+        public virtual void AssignmentCallback()
+        {
+            // Nothing to do
+        }
+
+        public virtual void RevokeCallback()
+        {
+            // Nothing to do
+        }
     }
 }

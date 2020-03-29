@@ -9,6 +9,10 @@ using Xunit.Abstractions;
 
 namespace MapColoringCsp
 {
+    /// <summary>
+    /// Map coloring problem as a basic test to ensure all algorithms are working effectively
+    /// Color Australia regions with different colors so that the neighbors are colored by different ones
+    /// </summary>
     public class CspTest
     {
         private readonly ITestOutputHelper _testOutputHelper;
@@ -163,7 +167,7 @@ namespace MapColoringCsp
         {
             // Use Hill-climbing search to find the legal combination
             var solved = _mapColoredCsp
-                .UseMinConflicts()
+                .UseMinConflictsResolver()
                 .Resolve(() =>
                 {
                     _testOutputHelper.WriteLine("==== Model: ====");

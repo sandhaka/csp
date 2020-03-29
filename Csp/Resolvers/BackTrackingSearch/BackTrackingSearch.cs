@@ -1,3 +1,4 @@
+using System.Linq;
 using Csp.Csp;
 
 namespace Csp.Resolvers.BackTrackingSearch
@@ -27,7 +28,7 @@ namespace Csp.Resolvers.BackTrackingSearch
             }
 
             var variable = _selUnVarStrategy.Next(csp);
-            foreach (var domainValue in _domValOrdStrategy.GetDomainValues(csp, variable.Key))
+            foreach (var domainValue in _domValOrdStrategy.GetDomainValues(csp, variable.Key).ToList())
             {
                 if (csp.Conflicts(variable.Key, domainValue) == 0)
                 {

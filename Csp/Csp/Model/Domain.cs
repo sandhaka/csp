@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -19,6 +20,11 @@ namespace Csp.Csp.Model
             Values = values.ToList();
             Pruned = new List<T>();
             RemovedByGuess = new List<T>();
+        }
+
+        internal T Random()
+        {
+            return Values[new Random().Next(Values.Count)];
         }
 
         internal void Prune(T value)

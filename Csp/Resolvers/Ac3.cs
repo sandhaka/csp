@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using Csp.Csp;
@@ -15,24 +14,10 @@ namespace Csp.Resolvers
         where T : CspValue
     {
         private Queue<KeyValuePair<string, Variable<T>>> _queue;
-        private readonly Action<Queue<KeyValuePair<string, Variable<T>>>> _arcHeuristic;
-
-        public Ac3(
-            Queue<KeyValuePair<string, Variable<T>>> queue = null,
-            Action<Queue<KeyValuePair<string, Variable<T>>>> arcHeuristic = null)
-        {
-            _queue = queue;
-            _arcHeuristic = arcHeuristic;
-        }
 
         public bool Resolve(Csp<T> csp)
         {
-            if (_queue == null)
-            {
-                _queue = new Queue<KeyValuePair<string, Variable<T>>>(csp.Model.FlatRelations());
-            }
-
-            _arcHeuristic?.Invoke(_queue);
+            _queue = new Queue<KeyValuePair<string, Variable<T>>>(csp.Model.FlatRelations());
 
             while (_queue.TryDequeue(out var pair))
             {
