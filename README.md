@@ -16,3 +16,4 @@ Abstractions to use Constraint Satisfaction Problems and resolvers in your proje
 ### Examples
 See tests projects:
 - MapColoringCsp: Color Australia regions with different colors in order to avoid conflicts (Every neighbor regions must has a different color).
+- SchoolCalendar: Organize 1 week teaching plan for 3 different classes and 5 teachers.
