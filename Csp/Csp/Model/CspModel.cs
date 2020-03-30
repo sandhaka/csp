@@ -137,6 +137,11 @@ namespace Csp.Csp.Model
             }, Formatting.Indented);
         }
 
+        internal Dictionary<string, T> Status()
+        {
+            return new Dictionary<string, T>(Variables.Select(v => new KeyValuePair<string, T>(v.Key, v.Value)));
+        }
+
         private void Validate()
         {
             var errors = new List<ValidationFailure>();

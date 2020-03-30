@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using ConsoleTables;
 using Csp.Csp;
 using Csp.Resolvers.BackTrackingSearch.Parametric;
 using Xunit;
@@ -68,10 +70,56 @@ namespace SchoolCalendar
                     _testOutputHelper.WriteLine("==== Model: ====");
                     _testOutputHelper.WriteLine($"{_schoolCalendarCsp.ShowModelAsJson()}");
                     _testOutputHelper.WriteLine("================");
+                    PrintPlan();
                 });
 
             Assert.True(solved);
             Assert.True(_schoolCalendarCsp.Resolved);
+        }
+
+        private void PrintPlan()
+        {
+            using var writer = new StreamWriter("../../School_Calendar_Final_Planning.txt");
+            var current = _schoolCalendarCsp.Status;
+
+            foreach (var c in SchoolCalendarTestFactory.Classes)
+            {
+                var @class = current.Where(v => DomainUtils.DecodeClass(v.Key).Equals(c)).ToList();
+                var table = new ConsoleTable("MON", "TUE", "WEN", "THU", "FRI")
+                {
+                    Options =
+                    {
+                        EnableCount = false,
+                        OutputTo = writer
+                    }
+                };
+
+                for (var h = 1; h <= SchoolCalendarTestFactory.NumOfDayHours; h++)
+                {
+                    var hour = h.ToString();
+                    var th1 = @class.Single(v =>
+                        DomainUtils.DecodeDay(v.Key).Equals("1") &&
+                        DomainUtils.DecodeHour(v.Key).Equals(hour)).Value;
+                    var th2 = @class.Single(v =>
+                        DomainUtils.DecodeDay(v.Key).Equals("2") &&
+                        DomainUtils.DecodeHour(v.Key).Equals(hour)).Value;
+                    var th3 = @class.Single(v =>
+                        DomainUtils.DecodeDay(v.Key).Equals("3") &&
+                        DomainUtils.DecodeHour(v.Key).Equals(hour)).Value;
+                    var th4 = @class.Single(v =>
+                        DomainUtils.DecodeDay(v.Key).Equals("4") &&
+                        DomainUtils.DecodeHour(v.Key).Equals(hour)).Value;
+                    var th5 = @class.Single(v =>
+                        DomainUtils.DecodeDay(v.Key).Equals("5") &&
+                        DomainUtils.DecodeHour(v.Key).Equals(hour)).Value;
+
+                    table.AddRow(th1.Name, th2.Name, th3.Name, th4.Name, th5.Name);
+                }
+
+                writer.WriteLine($"--- CLASS {c} ---");
+                table.Write();
+                writer.WriteLine();
+            }
         }
     }
 }

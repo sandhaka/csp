@@ -68,6 +68,8 @@ namespace Csp.Csp
 
         public Dictionary<string, T> Pruned => _model.PrunedDomainValues.ToDictionary(d => d.Key, d => d.Value);
 
+        public Dictionary<string, T> Status => _model.Status();
+
         public Csp<T> UseAc3AsResolver()
         {
             _resolver = new Ac3<T>();

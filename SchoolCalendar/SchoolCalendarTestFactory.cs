@@ -5,9 +5,9 @@ namespace SchoolCalendar
 {
     public static class SchoolCalendarTestFactory
     {
-        private static readonly string[] Classes = { "A", "B", "C" };
-        private const int NumOfWeekDays = 5;
-        private const int NumOfDayHours = 6;
+        public static readonly string[] Classes = { "A", "B", "C" };
+        public const int NumOfWeekDays = 5;
+        public const int NumOfDayHours = 6;
 
         public static Dictionary<string, (IEnumerable<Teacher> domains, IEnumerable<string> relations)> CreateTestData()
         {
@@ -68,11 +68,12 @@ namespace SchoolCalendar
             // 100h total capacity
             return new List<Teacher>
             {
-                new Teacher("Peppino Spazzeguti", 20, "Math"),
-                new Teacher("Gino Brambilla", 20, "Literature"),
-                new Teacher("Filiberto Grotti", 20, "History"),
-                new Teacher("Carlo Ciampi", 20, "English"),
-                new Teacher("Elio Insonne", 20, "Science")
+                new Teacher("Peppino Spazzeguti",16, "Math"),
+                new Teacher("Gino Brambilla", 16, "Literature"),
+                new Teacher("Filiberto Grotti", 16, "History"),
+                new Teacher("Carlo Ciampi", 16, "English"),
+                new Teacher("Elio Insonne", 16, "Science"),
+                new Teacher("Adriana Volpe", 16, "Chemistry")
             };
         }
 
