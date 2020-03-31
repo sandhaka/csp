@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using System.Linq;
 
 namespace Csp.Csp.Model
@@ -16,6 +17,8 @@ namespace Csp.Csp.Model
 
         internal Domain(string key, IEnumerable<T> values)
         {
+            Contract.Requires(values.Any());
+
             Key = key;
             Values = values.ToList();
             Pruned = new List<T>();

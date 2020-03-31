@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
+using System.Linq;
 
 namespace Csp.Csp
 {
@@ -11,7 +13,9 @@ namespace Csp.Csp
             IEnumerable<Func<string, T, string, T, bool>> constraints
         ) where T : CspValue
         {
-            // TODO: Manage here the inputs basic validations
+            Contract.Requires(domains.Any());
+            Contract.Requires(relations.Any());
+            Contract.Requires(constraints.Any());
 
             return new Csp<T>(domains, relations, constraints);
         }
