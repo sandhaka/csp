@@ -17,7 +17,7 @@ namespace Csp.Csp.Model
 
         internal Domain(string key, IEnumerable<T> values)
         {
-            Contract.Requires(values.Any());
+            Contract.Assert(values.Any());
 
             Key = key;
             Values = values.ToList();
@@ -48,13 +48,13 @@ namespace Csp.Csp.Model
             Values.RemoveAll(v => v != value);
         }
 
-        internal void RestoreGuess(string key)
+        internal void RestoreGuess()
         {
             Values.AddRange(RemovedByGuess);
             RemovedByGuess.Clear();
         }
 
-        internal void RestorePruned(string key)
+        internal void RestorePruned()
         {
             Values.AddRange(Pruned);
             Pruned.Clear();

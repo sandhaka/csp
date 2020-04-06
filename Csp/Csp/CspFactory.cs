@@ -13,9 +13,9 @@ namespace Csp.Csp
             IEnumerable<Func<string, T, string, T, bool>> constraints
         ) where T : CspValue
         {
-            Contract.Requires(domains.Any());
-            Contract.Requires(relations.Any());
-            Contract.Requires(constraints.Any());
+            Contract.Assert(domains.Any());
+            Contract.Assert(relations.Any());
+            Contract.Assert(constraints.Any());
 
             return new Csp<T>(domains, relations, constraints);
         }

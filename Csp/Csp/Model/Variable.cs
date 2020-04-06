@@ -15,11 +15,13 @@ namespace Csp.Csp.Model
                 if (value == null)
                 {
                     _value?.RevokeCallback();
+                    _value = null;
                 }
-
-                _value = value;
-
-                _value?.AssignmentCallback();
+                else
+                {
+                    _value = value;
+                    _value.AssignmentCallback();
+                }
             }
         }
 

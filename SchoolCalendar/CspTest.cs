@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text;
 using ConsoleTables;
 using Csp.Csp;
 using Csp.Resolvers.BackTrackingSearch.Parametric;
@@ -11,7 +12,7 @@ using Xunit.Abstractions;
 namespace SchoolCalendar
 {
     /// <summary>
-    /// School calendar problem combine 5 professors to fill 1 week teachings over 3 classes
+    /// School calendar problem combine 6 professors to fill 1 week teachings over 3 classes
     /// That's a special case because we need to track the hours spent for each teacher,
     /// we also have to try to assign them uniformly in the week and in the classes.
     /// Just a few constraints:
@@ -67,10 +68,12 @@ namespace SchoolCalendar
                     DomainValuesOrderingStrategyTypes<Teacher>.DomainCustomOrder)
                 .Resolve(() =>
                 {
+                    PrintPlan();
+                    _testOutputHelper.WriteLine(Environment.NewLine);
+
                     _testOutputHelper.WriteLine("==== Model: ====");
                     _testOutputHelper.WriteLine($"{_schoolCalendarCsp.ShowModelAsJson()}");
                     _testOutputHelper.WriteLine("================");
-                    PrintPlan();
                 });
 
             Assert.True(solved);
@@ -88,6 +91,9 @@ namespace SchoolCalendar
                     InferenceStrategyTypes<Teacher>.ForwardChecking)
                 .Resolve(() =>
                 {
+                    PrintPlan();
+                    _testOutputHelper.WriteLine(Environment.NewLine);
+
                     _testOutputHelper.WriteLine("==== Model: ====");
                     _testOutputHelper.WriteLine($"{_schoolCalendarCsp.ShowModelAsJson()}");
                     _testOutputHelper.WriteLine("================");
@@ -107,6 +113,9 @@ namespace SchoolCalendar
                     DomainValuesOrderingStrategyTypes<Teacher>.DomainCustomOrder)
                 .Resolve(() =>
                 {
+                    PrintPlan();
+                    _testOutputHelper.WriteLine(Environment.NewLine);
+
                     _testOutputHelper.WriteLine("==== Model: ====");
                     _testOutputHelper.WriteLine($"{_schoolCalendarCsp.ShowModelAsJson()}");
                     _testOutputHelper.WriteLine("================");
@@ -118,8 +127,10 @@ namespace SchoolCalendar
 
         private void PrintPlan()
         {
-            using var writer = new StreamWriter("../../School_Calendar_Final_Planning.txt");
             var current = _schoolCalendarCsp.Status;
+
+            using var ms = new MemoryStream();
+            using var writer = new StreamWriter(ms);
 
             foreach (var c in SchoolCalendarTestFactory.Classes)
             {
@@ -158,6 +169,11 @@ namespace SchoolCalendar
                 writer.WriteLine($"--- CLASS {c} ---");
                 table.Write();
                 writer.WriteLine();
+
+                writer.Flush();
+                ms.Seek(0, SeekOrigin.Begin);
+
+                _testOutputHelper.WriteLine(Encoding.UTF8.GetString(ms.ToArray()));
             }
         }
     }

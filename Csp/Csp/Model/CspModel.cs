@@ -126,12 +126,12 @@ namespace Csp.Csp.Model
 
         internal void RestoreGuess(string key)
         {
-            GetDomain(key).RestoreGuess(key);
+            GetDomain(key).RestoreGuess();
         }
 
         internal void RestorePruned(string key)
         {
-            GetDomain(key).RestorePruned(key);
+            GetDomain(key).RestorePruned();
         }
 
         internal string ToJson()

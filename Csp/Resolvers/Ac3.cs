@@ -15,7 +15,7 @@ namespace Csp.Resolvers
     {
         private Queue<(string Key, Variable<T> Value)> _queue;
 
-        public bool Ensure(Csp<T> csp)
+        public bool Propagate(Csp<T> csp)
         {
             _queue = new Queue<(string Key, Variable<T> Value)>(
                 csp.Model.GetRelations.SelectMany(r => r.Values.Select(v => (r.Key, v)))

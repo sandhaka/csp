@@ -117,7 +117,7 @@ namespace Csp.Csp
 
         public bool PropagateArcConsistency(Action whenEnsured = null)
         {
-            var propagated = _arcConsistency?.Ensure(this) ??
+            var propagated = _arcConsistency?.Propagate(this) ??
                              throw new InvalidOperationException("An arc consistency method must be set");
 
             if (propagated)

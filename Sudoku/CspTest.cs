@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text;
 using ConsoleTables;
 using Csp.Csp;
 using Csp.Resolvers.BackTrackingSearch.Parametric;
@@ -10,6 +11,9 @@ using Xunit.Abstractions;
 
 namespace Sudoku
 {
+    /// <summary>
+    /// 9X9 Sudoku Resolvers
+    /// </summary>
     public class CspTest
     {
         private readonly ITestOutputHelper _testOutputHelper;
@@ -60,10 +64,12 @@ namespace Sudoku
                     // Auto assign the legal values left
                     _sudokuCsp.AutoAssignment();
 
+                    PrintStatus("AC3 End");
+                    _testOutputHelper.WriteLine(Environment.NewLine);
+
                     _testOutputHelper.WriteLine("==== Model: ====");
                     _testOutputHelper.WriteLine($"{_sudokuCsp.ShowModelAsJson()}");
                     _testOutputHelper.WriteLine("================");
-                    PrintStatus("AC3 End");
                 });
 
             Assert.True(solved);
@@ -78,10 +84,12 @@ namespace Sudoku
                 .UseBackTrackingSearchResolver()
                 .Resolve(() =>
                 {
+                    PrintStatus("BTS Default End");
+                    _testOutputHelper.WriteLine(Environment.NewLine);
+
                     _testOutputHelper.WriteLine("==== Model: ====");
                     _testOutputHelper.WriteLine($"{_sudokuCsp.ShowModelAsJson()}");
                     _testOutputHelper.WriteLine("================");
-                    PrintStatus("BTS Default End");
                 });
 
             Assert.True(solved);
@@ -99,10 +107,12 @@ namespace Sudoku
                     InferenceStrategyTypes<Number>.ForwardChecking)
                 .Resolve(() =>
                 {
+                    PrintStatus("BTS Forward-Checking End");
+                    _testOutputHelper.WriteLine(Environment.NewLine);
+
                     _testOutputHelper.WriteLine("==== Model: ====");
                     _testOutputHelper.WriteLine($"{_sudokuCsp.ShowModelAsJson()}");
                     _testOutputHelper.WriteLine("================");
-                    PrintStatus("BTS Forward-Checking End");
                 });
 
             Assert.True(solved);
@@ -118,10 +128,12 @@ namespace Sudoku
                     SelectUnassignedVariableStrategyTypes<Number>.MinimumRemainingValues)
                 .Resolve(() =>
                 {
+                    PrintStatus("BTS MinimumRemainingValues End");
+                    _testOutputHelper.WriteLine(Environment.NewLine);
+
                     _testOutputHelper.WriteLine("==== Model: ====");
                     _testOutputHelper.WriteLine($"{_sudokuCsp.ShowModelAsJson()}");
                     _testOutputHelper.WriteLine("================");
-                    PrintStatus("BTS MinimumRemainingValues End");
                 });
 
             Assert.True(solved);
@@ -138,10 +150,12 @@ namespace Sudoku
                     DomainValuesOrderingStrategyTypes<Number>.LeastConstrainingValues)
                 .Resolve(() =>
                 {
+                    PrintStatus("BTS LeastConstrainingValues End");
+                    _testOutputHelper.WriteLine(Environment.NewLine);
+
                     _testOutputHelper.WriteLine("==== Model: ====");
                     _testOutputHelper.WriteLine($"{_sudokuCsp.ShowModelAsJson()}");
                     _testOutputHelper.WriteLine("================");
-                    PrintStatus("BTS LeastConstrainingValues End");
                 });
 
             Assert.True(solved);
@@ -150,8 +164,10 @@ namespace Sudoku
 
         private void PrintStatus(string label)
         {
-            using var writer = new StreamWriter($"../../Sudoku_{label}.txt");
             var current = _sudokuCsp.Status;
+
+            using var ms = new MemoryStream();
+            using var writer = new StreamWriter(ms);
 
             var table = new ConsoleTable
             {
@@ -178,6 +194,11 @@ namespace Sudoku
             writer.WriteLine($"==== Sudoku {label} ====");
             table.Write();
             writer.WriteLine();
+
+            writer.Flush();
+            ms.Seek(0, SeekOrigin.Begin);
+
+            _testOutputHelper.WriteLine(Encoding.UTF8.GetString(ms.ToArray()));
         }
 
         private static IEnumerable<dynamic> AddSquareEdges(IEnumerable<dynamic> elems)
