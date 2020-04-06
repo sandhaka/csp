@@ -53,6 +53,7 @@ namespace SchoolCalendar
             }
         }
 
+        // Define ordering of domain values
         public int CompareTo(Teacher other)
         {
             if (ReferenceEquals(this, other)) return 0;

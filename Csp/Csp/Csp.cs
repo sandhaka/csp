@@ -13,6 +13,7 @@ namespace Csp.Csp
     {
         private readonly CspModel<T> _model;
         private IResolver<T> _resolver;
+        private IArcConsistency<T> _arcConsistency;
         private int _nAssigns;
 
         internal Csp(
@@ -52,6 +53,8 @@ namespace Csp.Csp
 
         public void AutoAssignment() => _model.AutoAssign();
 
+        public void ShrinkDomainToAssignment(string key) => _model.ShrinkDomainToAssignment(key);
+
         public void SortBeforeAutoAssignment() => _model.SortAndAutoAssign();
 
         public void RandomAssignment() => _model.RandomAssign();
@@ -72,18 +75,18 @@ namespace Csp.Csp
 
         public Csp<T> UseAc3AsResolver()
         {
-            _resolver = new Ac3<T>();
+            _arcConsistency = new Ac3<T>();
             return this;
         }
 
         public Csp<T> UseBackTrackingSearchResolver(
-            string selectStrategy = "",
-            string domainOrderingStrategy = "",
+            string selectStrategyType = "",
+            string domainOrderingStrategyType = "",
             string infStrategyType = "")
         {
             var infType = Type.GetType(infStrategyType) ?? typeof(NoInference<T>);
-            var domainOrdType = Type.GetType(domainOrderingStrategy) ?? typeof(UnorderedDomainValues<T>);
-            var selectType = Type.GetType(selectStrategy) ?? typeof(FirstUnassignedVariable<T>);
+            var domainOrdType = Type.GetType(domainOrderingStrategyType) ?? typeof(UnorderedDomainValues<T>);
+            var selectType = Type.GetType(selectStrategyType) ?? typeof(FirstUnassignedVariable<T>);
 
             _resolver = new BackTrackingSearch<T>(
                 (ISelectUnassignedVariableStrategy<T>) Activator.CreateInstance(selectType),
@@ -101,7 +104,8 @@ namespace Csp.Csp
 
         public bool Resolve(Action whenResolved = null)
         {
-            var resolved = _resolver?.Resolve(this) ?? throw new InvalidOperationException("A resolver must be set");
+            var resolved = _resolver?.Resolve(this) ??
+                           throw new InvalidOperationException("A resolver must be set");
 
             if (resolved)
             {
@@ -109,6 +113,19 @@ namespace Csp.Csp
             }
 
             return resolved;
+        }
+
+        public bool PropagateArcConsistency(Action whenEnsured = null)
+        {
+            var propagated = _arcConsistency?.Ensure(this) ??
+                             throw new InvalidOperationException("An arc consistency method must be set");
+
+            if (propagated)
+            {
+                whenEnsured?.Invoke();
+            }
+
+            return propagated;
         }
 
         #endregion

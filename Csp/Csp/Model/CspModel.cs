@@ -39,6 +39,7 @@ namespace Csp.Csp.Model
         internal Variable<T> GetFirstVariable(Func<Variable<T>, bool> predicate) => Variables.FirstOrDefault(predicate);
         internal Domain<T> GetDomain(string key) => Domains.First(d => d.Key == key);
         internal IEnumerable<Constraint<T>> GetConstraints() => Constraints;
+        internal IEnumerable<Relations<T>> GetRelations => Relations;
         internal IEnumerable<string> VariablesKeys => Variables.Select(v => v.Key);
         internal IEnumerable<string> UnassignedVariables => Variables.Where(v => !v.Assigned).Select(v => v.Key);
         internal IEnumerable<(string Key, int NumberOfConflicts)> ConflictedVariables => Variables
@@ -47,10 +48,6 @@ namespace Csp.Csp.Model
         internal Relations<T> VariableRelations(string key) =>
             Relations.FirstOrDefault(r =>
                 r.Key == key) ?? new Relations<T>(key, new List<Variable<T>>());
-        internal IEnumerable<KeyValuePair<string, Variable<T>>> FlatRelations() =>
-            Relations.SelectMany(r =>
-                r.Values.Select(v =>
-                    new KeyValuePair<string, Variable<T>>(v.Key, GetVariable(r.Key))));
         internal IEnumerable<KeyValuePair<string, T>> PrunedDomainValues =>
             Domains.SelectMany(d =>
                 d.Pruned.Select(p =>
@@ -66,6 +63,11 @@ namespace Csp.Csp.Model
         internal void Assign(string key, T value)
         {
             GetVariable(key).Value = value;
+        }
+
+        internal void ShrinkDomainToAssignment(string key)
+        {
+            GetDomain(key).Shrink(GetVariable(key).Value);
         }
 
         internal void SortAndAutoAssign()
@@ -125,6 +127,11 @@ namespace Csp.Csp.Model
         internal void RestoreGuess(string key)
         {
             GetDomain(key).RestoreGuess(key);
+        }
+
+        internal void RestorePruned(string key)
+        {
+            GetDomain(key).RestorePruned(key);
         }
 
         internal string ToJson()

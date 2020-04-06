@@ -10,26 +10,41 @@ using Csp.Csp.Model;
 
 namespace Csp.Resolvers
 {
-    internal class Ac3<T> : IResolver<T>
+    internal class Ac3<T> : IArcConsistency<T>
         where T : CspValue
     {
-        private Queue<KeyValuePair<string, Variable<T>>> _queue;
+        private Queue<(string Key, Variable<T> Value)> _queue;
 
-        public bool Resolve(Csp<T> csp)
+        public bool Ensure(Csp<T> csp)
         {
-            _queue = new Queue<KeyValuePair<string, Variable<T>>>(csp.Model.FlatRelations());
+            _queue = new Queue<(string Key, Variable<T> Value)>(
+                csp.Model.GetRelations.SelectMany(r => r.Values.Select(v => (r.Key, v)))
+            );
 
-            while (_queue.TryDequeue(out var pair))
+            while (_queue.Any())
             {
+                var pair = _queue.Dequeue();
+
                 var x = csp.Model.GetVariable(pair.Key);
+
                 var y = pair.Value;
+
                 if (Revise(csp, x, y))
                 {
                     if (csp.Model.GetDomain(x.Key).IsEmpty)
                     {
                         return false;
                     }
-                    _queue.Enqueue(pair);
+
+                    var relatedVariables = csp.Model.VariableRelations(x.Key).Values;
+
+                    foreach (var variable in relatedVariables)
+                    {
+                        if (!_queue.ToList().Exists(i => i.Key.Equals(variable.Key) && i.Value.Equals(x)))
+                        {
+                            _queue.Enqueue((variable.Key, x));
+                        }
+                    }
                 }
             }
 
@@ -40,20 +55,18 @@ namespace Csp.Resolvers
         {
             var revised = false;
 
-            foreach (var domainIVal in csp.Model.GetDomain(i.Key).Values)
+            foreach (var domainIVal in csp.Model.GetDomain(i.Key).Values.ToList())
             {
-                foreach (var domainJVal in csp.Model.GetDomain(j.Key).Values)
+                if (csp.Model.GetDomain(j.Key)
+                    .Values.All(domainJVal =>
+                        csp.Model.GetConstraints().Any(c =>
+                            !c.Rule.Invoke(i.Key, domainIVal, j.Key, domainJVal)
+                        )
+                    )
+                )
                 {
-                    if (csp.Model.GetConstraints().Any(c => !c.Rule.Invoke(i.Key, domainIVal, j.Key, domainJVal)))
-                    {
-                        csp.Model.Prune(i.Key, domainIVal);
-                        revised = true;
-                    }
-                }
-
-                if (revised)
-                {
-                    break;
+                    csp.Model.Prune(i.Key, domainIVal);
+                    revised = true;
                 }
             }
 

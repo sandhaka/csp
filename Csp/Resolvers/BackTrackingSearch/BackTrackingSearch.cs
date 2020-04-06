@@ -34,13 +34,19 @@ namespace Csp.Resolvers.BackTrackingSearch
                 {
                     csp.AddAssignment(variable.Key, domainValue);
                     csp.Model.Suppose(variable.Key, domainValue);
-                    if (_infStrategy.Inference(csp, variable.Key, domainValue))
+                    if (_infStrategy.Inference(csp, variable.Key, domainValue, out var pruned))
                     {
                         if (Resolve(csp))
                         {
                             return true;
                         }
                     }
+
+                    foreach (var prunedDomain in pruned)
+                    {
+                        csp.Model.RestorePruned(prunedDomain);
+                    }
+
                     csp.Model.RestoreGuess(variable.Key);
                 }
             }

@@ -17,7 +17,7 @@ jobs:
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: 3.1.101
-    - name: Build with dotnet
+    - name: Build
       run: dotnet build --configuration Release
   test:
     
@@ -29,7 +29,7 @@ jobs:
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: 3.1.101
-    - name: Build with dotnet
+    - name: Build
       run: dotnet build
     - name: Run Unit-Test
-      run: dotnet test --no-build -v diag
+      run: dotnet test --no-build

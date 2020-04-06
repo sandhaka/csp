@@ -6,6 +6,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MapColoringCsp", "MapColori
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SchoolCalendar", "SchoolCalendar\SchoolCalendar.csproj", "{585A774B-6B4F-4551-8AB6-35E38AECCCAA}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sudoku", "Sudoku\Sudoku.csproj", "{56A1E14A-B7E9-43A6-AC4D-2BB74E1CCF43}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -24,5 +26,9 @@ Global
 		{585A774B-6B4F-4551-8AB6-35E38AECCCAA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{585A774B-6B4F-4551-8AB6-35E38AECCCAA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{585A774B-6B4F-4551-8AB6-35E38AECCCAA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{56A1E14A-B7E9-43A6-AC4D-2BB74E1CCF43}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{56A1E14A-B7E9-43A6-AC4D-2BB74E1CCF43}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{56A1E14A-B7E9-43A6-AC4D-2BB74E1CCF43}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{56A1E14A-B7E9-43A6-AC4D-2BB74E1CCF43}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

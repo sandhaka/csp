@@ -71,31 +71,19 @@ namespace MapColoringCsp
         [Fact]
         public void ShouldPropagateConsistencyWithAc3()
         {
+            // Start configuration
+            _mapColoredCsp.AddAssignment("SA", Color.Red);
+            _mapColoredCsp.ShrinkDomainToAssignment("SA");
+            _mapColoredCsp.AddAssignment("WA", Color.Blue);
+            _mapColoredCsp.ShrinkDomainToAssignment("WA");
+
             // Use Arc-Consistency propagation to reduce the legal domain values
             var solved = _mapColoredCsp
                 .UseAc3AsResolver()
-                .Resolve(() =>
+                .PropagateArcConsistency(() =>
                 {
-                    // Auto assign the legal values left
                     _mapColoredCsp.AutoAssignment();
 
-                    _testOutputHelper.WriteLine("==== Model: ====");
-                    _testOutputHelper.WriteLine($"{_mapColoredCsp.ShowModelAsJson()}");
-                    _testOutputHelper.WriteLine("================");
-                });
-
-            Assert.True(solved);
-            Assert.True(_mapColoredCsp.Resolved);
-        }
-
-        [Fact]
-        public void ShouldResolveWithBackTrackingSearch()
-        {
-            // Use Backtracking Search (Depth-First) to assign legal values
-            var solved = _mapColoredCsp
-                .UseBackTrackingSearchResolver()
-                .Resolve(() =>
-                {
                     _testOutputHelper.WriteLine("==== Model: ====");
                     _testOutputHelper.WriteLine($"{_mapColoredCsp.ShowModelAsJson()}");
                     _testOutputHelper.WriteLine("================");

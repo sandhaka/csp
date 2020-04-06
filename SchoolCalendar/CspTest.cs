@@ -76,6 +76,45 @@ namespace SchoolCalendar
             Assert.True(solved);
             Assert.True(_schoolCalendarCsp.Resolved);
         }
+        
+                [Fact]
+        public void ShouldResolveWithBackTrackingSearchAndForwardCheckingInferenceStrategy()
+        {
+            // Use Backtracking Search (Depth-First) to assign legal values
+            var solved = _schoolCalendarCsp
+                .UseBackTrackingSearchResolver(
+                    SelectUnassignedVariableStrategyTypes<Teacher>.FirstUnassignedVariable,
+                    DomainValuesOrderingStrategyTypes<Teacher>.DomainCustomOrder,
+                    InferenceStrategyTypes<Teacher>.ForwardChecking)
+                .Resolve(() =>
+                {
+                    _testOutputHelper.WriteLine("==== Model: ====");
+                    _testOutputHelper.WriteLine($"{_schoolCalendarCsp.ShowModelAsJson()}");
+                    _testOutputHelper.WriteLine("================");
+                });
+
+            Assert.True(solved);
+            Assert.True(_schoolCalendarCsp.Resolved);
+        }
+
+        [Fact]
+        public void ShouldResolveWithBackTrackingSearchAndMinimumRemainingStrategy()
+        {
+            // Use Backtracking Search (Depth-First) to assign legal values
+            var solved = _schoolCalendarCsp
+                .UseBackTrackingSearchResolver(
+                    SelectUnassignedVariableStrategyTypes<Teacher>.MinimumRemainingValues,
+                    DomainValuesOrderingStrategyTypes<Teacher>.DomainCustomOrder)
+                .Resolve(() =>
+                {
+                    _testOutputHelper.WriteLine("==== Model: ====");
+                    _testOutputHelper.WriteLine($"{_schoolCalendarCsp.ShowModelAsJson()}");
+                    _testOutputHelper.WriteLine("================");
+                });
+
+            Assert.True(solved);
+            Assert.True(_schoolCalendarCsp.Resolved);
+        }
 
         private void PrintPlan()
         {
