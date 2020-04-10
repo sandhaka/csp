@@ -79,8 +79,8 @@ namespace SchoolCalendar
             Assert.True(solved);
             Assert.True(_schoolCalendarCsp.Resolved);
         }
-        
-                [Fact]
+
+        [Fact]
         public void ShouldResolveWithBackTrackingSearchAndForwardCheckingInferenceStrategy()
         {
             // Use Backtracking Search (Depth-First) to assign legal values

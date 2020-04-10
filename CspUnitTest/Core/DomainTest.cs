@@ -59,5 +59,21 @@ namespace CspUnitTest.Core
             Assert.True(!_sut.Pruned.Exists(v => v.C == val.C));
             Assert.True(!_sut.RemovedByGuess.Exists(v => v.C == val.C));
         }
+
+        [Fact]
+        public void ShouldShrink()
+        {
+            // Setup
+            var val = new DummyCspValue("Y");
+
+            // Act
+            _sut.Shrink(val);
+
+            // Verify
+            Assert.True(_sut.Values.Exists(v => v.C == val.C));
+            Assert.False(_sut.Pruned.Any());
+            Assert.Single(_sut.Values);
+            Assert.False(_sut.RemovedByGuess.Any());
+        }
     }
 }

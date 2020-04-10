@@ -5,7 +5,6 @@ namespace Sudoku
 {
     public static class SudokuTestFactory
     {
-        public static string N = DomainUtils.N.ToString("0");
         private static readonly IEnumerable<int> NumOfRowsAndCols = "123456789".ToCharArray()
             .Select(c => int.Parse(c.ToString()))
             .ToArray();
