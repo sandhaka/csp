@@ -2,9 +2,6 @@ Constraint Satisfaction Problems Resolver Library
 ---
 ![.NET Core](https://github.com/sandhaka/csp/workflows/.NET%20Core/badge.svg)
 
-#### *Project Status*
-Active development
-
 ### Overview
 Abstractions to use Constraint Satisfaction Problems and resolvers in your projects.
 
